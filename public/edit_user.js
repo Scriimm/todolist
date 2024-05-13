@@ -34,7 +34,8 @@ function updateUser(userId) {
     const email = document.getElementById('email').value;
     const jwtToken = localStorage.getItem('jwt');
 
-    fetch(`/api/users/update/${userId}`, { 
+    
+    fetch(`/api/users/update/${userId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
