@@ -27,7 +27,7 @@ function updateUser(userId) {
     const email = document.getElementById('email').value;
     const jwtToken = localStorage.getItem('jwt');
 
-    // Assurez-vous que cette URL est correctement définie dans votre backend et qu'elle est capable de recevoir des requêtes PUT
+    
     fetch(`/api/users/update/${userId}`, {
         method: 'PUT',
         headers: {
