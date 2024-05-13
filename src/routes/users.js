@@ -40,16 +40,20 @@ router.post('/register', async (req, res) => {
 // Route pour la connexion
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
-    db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
+    db.query('SELECT id, email, role, password FROM users WHERE email = ?', [email], async (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
         if (results.length > 0) {
-            // Vérifier que le mot de passe correspond
-            const comparisonResult = await bcrypt.compare(password, results[0].password);
-            if (comparisonResult) {
-                const token = jwt.sign({ id: results[0].id }, 'secret_key', { expiresIn: '1h' });
-                res.json({ message: 'Connexion réussie', token });
+            const user = results[0];
+            const isValidPassword = await bcrypt.compare(password, user.password);
+            if (isValidPassword) {
+                const token = jwt.sign(
+                    { id: user.id, email: user.email, role: user.role },
+                    'secret_key',
+                    { expiresIn: '1h' }
+                );
+                res.json({ message: 'Connexion réussie', token, role: user.role });
             } else {
                 res.status(401).json({ error: 'Mot de passe incorrect' });
             }
@@ -58,6 +62,7 @@ router.post('/login', (req, res) => {
         }
     });
 });
+
 
 // Route pour obtenir le profil de l'utilisateur
 router.get('/profile', verifyToken, (req, res) => {
@@ -111,6 +116,20 @@ router.delete('/unsubscribe', verifyToken, (req, res) => {
             }
             res.json({ message: "Utilisateur désinscrit avec succès." });
         });
+    });
+});
+
+
+// route pour obtenir tous les utilisateurs
+router.get('/', verifyToken, (req, res) => {
+    if (req.user.role !== 'admin') { 
+        return res.status(403).json({ error: 'Accès refusé' });
+    }
+    db.query('SELECT id, username, email FROM users', (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
     });
 });
 

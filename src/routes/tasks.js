@@ -42,7 +42,7 @@ router.get('/', verifyToken, (req, res) => {
 router.put('/:taskId', verifyToken, (req, res) => {
     const { completed } = req.body;
     const { taskId } = req.params;
-    const userId = req.userId;  // S'assurer que la tâche appartient à l'utilisateur
+    const userId = req.userId;  
 
     db.query('UPDATE tasks SET completed = ? WHERE id = ? AND user_id = ?', [completed, taskId, userId], (err, results) => {
         if (err) {
