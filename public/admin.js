@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function fetchUsers() {
     const jwtToken = localStorage.getItem('jwt');
-    fetch('/api/users/admin', {  // Assurez-vous que cette route est correctement définie dans votre backend
+    fetch('/api/users/admin', {  
         headers: {
             'Authorization': `Bearer ${jwtToken}`
         }
