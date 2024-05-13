@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo List Application</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/jpg" href="to-do.jpg"> 
+</head>
+<body>
+<div id="todo-app">
+    <button id="user_profile" onclick="window.location.href='user_profile.html'">Profil Utilisateur</button>
+    <button id="logout-btn">Déconnexion</button>
+    <h1>Application Todo list en javascript</h1>
+    <div id="new-task">
+        <input type="text" id="task-input" placeholder="Ajouter une nouvelle tâche">
+        <button id="add-task-btn">+</button>
+    </div>
+    <div id="filters">
+        <button onclick="filterTasks('all')">Toutes les tâches</button>
+        <button onclick="filterTasks('completed')">Tâches achevées</button>
+        <button onclick="filterTasks('uncompleted')">Tâches non achevées</button>
+    </div>
+    <ul id="task-list">
+        <!-- les task-list s'ajouteront ici-->
+    </ul>
+</div>
+
+
+<script src="todolist.js"></script>
+</body>
+</html>

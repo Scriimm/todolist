@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mettre à jour le Profil</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Mettre à jour le Profil</h1>
+    <form id="update-profile-form">
+        <input type="text" id="username" name="username" placeholder="Nouveau nom" autocomplete="username">
+        <input type="email" id="email" name="email" placeholder="Nouvel email" autocomplete="email">
+        <input type="password" id="password" name="password" placeholder="Nouveau mot de passe" autocomplete="new-password">
+        <button type="submit">Enregistrer les Modifications</button>
+        <button onclick="window.location.href='user_profile.html'">Annuler</button>
+    </form>
+    <script src="update_profile.js"></script>
+</body>
+</html>
