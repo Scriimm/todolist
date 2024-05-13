@@ -169,10 +169,12 @@ router.put('/admin/users/:id', verifyToken, async (req, res) => {
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: "Accès refusé" });
     }
+    // Récupérer les informations de l'utilisateur
     const { username, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10); // Hashage du mot de passe
     const userId = req.params.id;
 
+    // Mise à jour des informations de l'utilisateur
     db.query('UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?', [username, email, hashedPassword, userId], (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
@@ -183,10 +185,11 @@ router.put('/admin/users/:id', verifyToken, async (req, res) => {
 
 // Mise à jour des informations de l'utilisateur
 router.put('/update/:id', verifyToken, async (req, res) => {
+    // Récupérer l'ID de l'utilisateur et les nouvelles informations
     const { id } = req.params;
     const { username, email } = req.body;
 
-    // Supposons que vous voulez garder le même mot de passe ou ne pas le mettre à jour ici
+    // Vérifier si l'utilisateur est autorisé à mettre à jour son propre profil
     db.query('UPDATE users SET username = ?, email = ? WHERE id = ?', [username, email, id], (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });

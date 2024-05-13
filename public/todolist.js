@@ -1,5 +1,5 @@
-document.getElementById('add-task-btn').addEventListener('click', addNewTask);
-document.getElementById('task-input').addEventListener('keypress', function(event) {
+document.getElementById('add-task-btn').addEventListener('click', addNewTask); // Ajoute un écouteur d'événement pour le bouton d'ajout de tâche
+document.getElementById('task-input').addEventListener('keypress', function(event) { // Ajoute un écouteur d'événement pour la touche 'Entrée' sur le champ de saisie
     if (event.key === 'Enter') {
         addNewTask();
     }
@@ -36,15 +36,15 @@ function fetchTasks() {
     .then(response => response.json())
     .then(tasks => {
         if (tasks.length > 0) {
-            tasks.forEach(task => addTaskToList(task.description, task.completed, task.id));
+            tasks.forEach(task => addTaskToList(task.description, task.completed, task.id)); // Ajoute chaque tâche à la liste
         } else {
             console.log('No tasks found for this user.');
         }
     })
-    .catch(error => console.error('Erreur lors de la récupération des tâches:', error));
+    .catch(error => console.error('Error fetching tasks:', error));
 }
 
-// Fonction pour ajouter une nouvelle tâche via l'API
+// Fonction pour ajouter une nouvelle tâche
 function addNewTask() {
     let taskInput = document.getElementById('task-input');
     let taskText = taskInput.value.trim();
@@ -67,24 +67,25 @@ function addNewTask() {
         .then(response => response.json())
         .then(task => {
             if (task.message) {
-                addTaskToList(taskText, false, task.taskId); // Assurez-vous que l'API retourne 'taskId' pour la nouvelle tâche
+                addTaskToList(taskText, false, task.taskId); 
                 taskInput.value = '';
             } else {
                 alert('Error adding task: ' + task.error);
             }
         })
-        .catch(error => console.error('Erreur lors de lajout de la tâche:', error));
+        .catch(error => console.error('Error adding task:', error));
     } else {
-        alert("Veuillez rédiger une tâche avant d'en ajouter.");
+        alert("Please enter a task before adding.");
     }
     taskInput.focus();
 }
 
-// Ajoute une tâche à la liste UI
+
+// Fonction pour ajouter une tâche à la liste
 function addTaskToList(taskText, isCompleted, taskId) {
     let taskList = document.getElementById('task-list');
     let taskLi = document.createElement('li');
-    taskLi.className = 'task' + (isCompleted ? ' completed' : '');
+    taskLi.className = 'task' + (isCompleted ? ' completed' : ''); // Ajoute la classe 'completed' si la tâche est complétée
     taskLi.setAttribute('data-task-id', taskId);
 
     let taskContentSpan = document.createElement('span');
@@ -111,10 +112,10 @@ function addTaskToList(taskText, isCompleted, taskId) {
     taskList.appendChild(taskLi);
 }
 
-// Fonction pour basculer l'état de complétion d'une tâche
+// Fonction pour basculer l'état de complétion de la tâche
 function toggleTaskCompletion(taskItem, taskId) {
-    const isCompleted = !taskItem.classList.contains('completed');
-    fetch(`/api/tasks/${taskId}`, {
+    const isCompleted = !taskItem.classList.contains('completed'); // Inverse l'état de complétion actuel
+    fetch(`/api/tasks/${taskId}`, { //
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -122,21 +123,21 @@ function toggleTaskCompletion(taskItem, taskId) {
         },
         body: JSON.stringify({ completed: isCompleted })
     })
-    .then(response => response.json()  // Assurez-vous de convertir la réponse en JSON
+    .then(response => response.json())
     .then(data => {
-        if (data.message) {  // Vérifiez si la réponse contient un message de succès
+        if (data.message) {
             taskItem.classList.toggle('completed');
         } else {
             alert('Error updating task: ' + data.error);
         }
     })
     .catch(error => {
-        console.error('Erreur lors de la mise à jour de la tâche:', error);
-        alert('Erreur lors de la mise à jour de la tâche: ' + error);
-    }));
+        console.error('Error updating task:', error);
+        alert('Error updating task: ' + error);
+    });
 }
 
-
+// Fonction pour supprimer une tâche
 function deleteTask(taskId, taskItem) {
     fetch(`/api/tasks/${taskId}`, {
         method: 'DELETE',
@@ -152,23 +153,22 @@ function deleteTask(taskId, taskItem) {
             alert('Failed to delete the task.');
         }
     })
-    .catch(error => console.error('Erreur lors de la suppression de la tâche:', error));
+    .catch(error => console.error('Error deleting task:', error));
 }
 
-
-// Fonction pour filtrer les tâches
+// Ajoute un écouteur d'événement pour le filtre de tâches
 function filterTasks(filter) {
     const tasks = document.querySelectorAll('.task');
     tasks.forEach(task => {
         switch(filter) {
             case 'all':
-                task.style.display = '';
+                task.style.display = ''; // Affiche toutes les tâches
                 break;
             case 'completed':
-                task.classList.contains('completed') ? task.style.display = '' : task.style.display = 'none';
+                task.classList.contains('completed') ? task.style.display = '' : task.style.display = 'none'; // Affiche les tâches complétées et masque les autres
                 break;
             case 'uncompleted':
-                !task.classList.contains('completed') ? task.style.display = '' : task.style.display = 'none';
+                !task.classList.contains('completed') ? task.style.display = '' : task.style.display = 'none'; // Affiche les tâches non complétées et masque les autres
                 break;
         }
     });

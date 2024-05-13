@@ -1,10 +1,11 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() { // Exécute le code une fois que le DOM est entièrement chargé
     const jwtToken = localStorage.getItem('jwt');
     if (!jwtToken) {
         window.location.href = 'login.html';
     }
 });
 
+// Récupère les données de l'utilisateur actuellement connecté
 document.getElementById('update-profile-form').addEventListener('submit', function(event) {
     event.preventDefault();
     const username = document.getElementById('username').value;

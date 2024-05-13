@@ -1,11 +1,18 @@
+
+// Fonction appelée lorsque la page HTML est chargée
 document.addEventListener('DOMContentLoaded', function() {
     fetchUserInfo();
 });
 
+
+// Fonction pour mettre à jour le profil de l'utilisateur
 document.getElementById('unsubscribe-btn').addEventListener('click', function() {
     unsubscribe();
 });
 
+
+
+// Fonction pour récupérer les informations de l'utilisateur
 function fetchUserInfo() {
     const jwtToken = localStorage.getItem('jwt');
     if (!jwtToken) {
@@ -13,9 +20,6 @@ function fetchUserInfo() {
         window.location.href = 'login.html';
         return;
     }
-
-    // Simuler une API qui renvoie les informations de l'utilisateur
-    // Vous devez remplacer cette partie par votre propre appel API
     fetch('/api/users/profile', {
         headers: {
             'Authorization': `Bearer ${jwtToken}`
@@ -34,6 +38,8 @@ function fetchUserInfo() {
     });
 }
 
+
+// Fonction pour afficher les informations de l'utilisateur
 function displayUserInfo(userInfo) {
     const userInfoDiv = document.getElementById('user-info');
     userInfoDiv.innerHTML = `<p>Nom : ${userInfo.name}</p>
@@ -42,11 +48,13 @@ function displayUserInfo(userInfo) {
 
 
 
-
+// Fonction pour se désinscrire de l'application
 document.getElementById('unsubscribe-btn').addEventListener('click', function() {
     unsubscribe();
 });
 
+
+// fonction pour update le profil de l'utilisateur
 function updateProfile() {
     const username = document.getElementById('username').value;
     const email = document.getElementById('email').value;
@@ -67,6 +75,8 @@ function updateProfile() {
     .catch(error => console.error('Erreur lors de la mise à jour du profil:', error));
 }
 
+
+// Fonction pour se désinscrire de l'application
 function unsubscribe() {
     const jwtToken = localStorage.getItem('jwt');
 
