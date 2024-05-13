@@ -21,9 +21,9 @@ document.getElementById('login-form').addEventListener('submit', function(event)
         if (data.token) {
             localStorage.setItem('jwt', data.token);
             if (data.role === 'admin') {
-                window.location.href = '/admin.html'; // Redirige les administrateurs vers la page admin
+                window.location.href = '/admin.html';  // Redirigez vers la page admin si l'utilisateur est admin
             } else {
-                window.location.href = '/index.html'; // Redirige les autres utilisateurs vers la page principale
+                window.location.href = '/index.html';  // Redirigez vers la page principale pour les autres utilisateurs
             }
         } else {
             alert('Connexion réussie, mais aucun token reçu.');
