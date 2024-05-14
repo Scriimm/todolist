@@ -40,7 +40,6 @@ router.post('/register', async (req, res) => {
 });
 
 // Route pour la connexion
-// user.js - Route de connexion
 router.post('/login', (req, res) => {
     const { email, password } = req.body;
     db.query('SELECT id, email, role, password FROM users WHERE email = ?', [email], async (err, results) => {
