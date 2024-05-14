@@ -9,13 +9,12 @@ const router = express.Router();
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
     if (typeof bearerHeader !== 'undefined') {
-        const bearer = bearerHeader.split(' ');
-        const bearerToken = bearer[1];
+        const bearerToken = bearerHeader.split(' ')[1];
         jwt.verify(bearerToken, 'secret_key', (err, decoded) => {
             if (err) {
                 res.status(403).json({ error: 'Token invalide ou expiré' });
             } else {
-                req.user = decoded;  
+                req.user = decoded; 
                 next();
             }
         });
@@ -24,6 +23,8 @@ function verifyToken(req, res, next) {
     }
 }
 
+
+//faire techniqu du bled : deux vérify token différent
 
 
 // Route pour l'inscription
@@ -68,14 +69,12 @@ router.post('/login', (req, res) => {
 
 // Route pour obtenir le profil de l'utilisateur
 router.get('/profile', verifyToken, (req, res) => {
-    const userId = req.userId;
-    console.log('User ID:', userId); 
+    const userId = req.user.id;  
     db.query('SELECT username, email FROM users WHERE id = ?', [userId], (err, results) => {
         if (err) {
             console.error('Database error:', err);
             return res.status(500).json({ error: err.message });
         }
-        console.log('Database results:', results);
         if (results.length > 0) {
             res.json({ username: results[0].username, email: results[0].email });
         } else {
@@ -83,6 +82,7 @@ router.get('/profile', verifyToken, (req, res) => {
         }
     });
 });
+
 
 
 // Mise à jour des informations de l'utilisateur

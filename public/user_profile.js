@@ -16,7 +16,6 @@ document.getElementById('unsubscribe-btn').addEventListener('click', function() 
 function fetchUserInfo() {
     const jwtToken = localStorage.getItem('jwt');
     if (!jwtToken) {
-        // alert("Vous n'êtes pas connecté. Redirection vers la page de connexion.");
         window.location.href = 'login.html';
         return;
     }
@@ -25,18 +24,20 @@ function fetchUserInfo() {
             'Authorization': `Bearer ${jwtToken}`
         }
     })
-    .then(response => response.json())
-    .then(userInfo => {
-        if (userInfo) {
-            displayUserInfo(userInfo);
-        } else {
-            console.log('Aucune information utilisateur trouvée.');
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch user profile');
         }
+        return response.json();
+    })
+    .then(userInfo => {
+        displayUserInfo(userInfo);
     })
     .catch(error => {
         console.error('Erreur lors de la récupération des informations de lutilisateur:', error);
     });
 }
+
 
 
 // Fonction pour afficher les informations de l'utilisateur
