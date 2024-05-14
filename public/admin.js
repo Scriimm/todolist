@@ -26,13 +26,13 @@ function fetchUsers() {
         return response.json();
     })
     .then(users => {
-        const userList = document.getElementById('user-list');
+        const userList = document.getElementById('users');
         users.forEach(user => {
             const userDiv = document.createElement('div');
             // Crée un élément HTML pour chaque utilisateur avec des boutons pour les actions
             userDiv.innerHTML = `Nom: ${user.username}, Email: ${user.email}, Role: ${user.role}
-                <button onclick="deleteUser(${user.id})">Désinscrire</button>
-                <button onclick="editUser(${user.id})">Modifier</button>`;
+                <button id="delete-btn" onclick="deleteUser(${user.id})">Désinscrire</button>
+                <button id="edit-btn" onclick="editUser(${user.id})">Modifier</button>`;
             userList.appendChild(userDiv);
         });
     })
