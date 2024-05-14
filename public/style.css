@@ -183,7 +183,7 @@ body {
     cursor: pointer;
 }
 
-#register #cancel-btn {
+#register-form #cancel-btn {
     padding: 10px 20px;
     background-color: #d9534f;
     color: white;
@@ -292,6 +292,7 @@ body {
 #admin .user {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
