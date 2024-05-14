@@ -47,6 +47,7 @@ function displayUserInfo(userInfo) {
 }
 
 
+
 // Fonction pour se désinscrire de l'application
 document.getElementById('unsubscribe-btn').addEventListener('click', function() {
     unsubscribe();

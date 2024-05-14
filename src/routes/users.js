@@ -15,8 +15,7 @@ function verifyToken(req, res, next) {
             if (err) {
                 res.status(403).json({ error: 'Token invalide ou expiré' });
             } else {
-                console.log(decoded);  
-                req.userId = decoded.id; 
+                req.user = decoded;  
                 next();
             }
         });
@@ -156,17 +155,26 @@ router.delete('/admin/users/:id', verifyToken, (req, res) => {
 
 // route pour obtenir tous les utilisateurs pour les admins
 router.get('/admin', verifyToken, (req, res) => {
-    if (req.user && req.user.role === 'admin') {
+    if (req.user.role === 'admin') {
         db.query('SELECT id, username, email, role FROM users', (err, results) => {
             if (err) {
+                console.error('Database error:', err);
                 return res.status(500).json({ error: err.message });
             }
-            res.json(results);
+            if (results.length > 0) {
+                res.json(results);
+            } else {
+                console.log('No users found');
+                res.status(404).json({ message: 'No users found' });
+            }
         });
     } else {
+        console.log('Access denied for role:', req.user.role);
         return res.status(403).json({ message: 'Accès refusé' });
     }
 });
+
+
 
 // Mise à jour des informations de l'utilisateur par l'admin
 router.put('/admin/users/:id', verifyToken, async (req, res) => {
