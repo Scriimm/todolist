@@ -42,10 +42,9 @@ function fetchUserInfo() {
 // Fonction pour afficher les informations de l'utilisateur
 function displayUserInfo(userInfo) {
     const userInfoDiv = document.getElementById('user-info');
-    userInfoDiv.innerHTML = `<p>Nom : ${userInfo.name}</p>
+    userInfoDiv.innerHTML = `<p>Nom : ${userInfo.username}</p>
                              <p>Email : ${userInfo.email}</p>`;
 }
-
 
 
 // Fonction pour se désinscrire de l'application

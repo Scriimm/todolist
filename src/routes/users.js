@@ -11,12 +11,12 @@ function verifyToken(req, res, next) {
     if (typeof bearerHeader !== 'undefined') {
         const bearer = bearerHeader.split(' ');
         const bearerToken = bearer[1];
-        jwt.verify(bearerToken, 'secret_key', (err, authData) => {
+        jwt.verify(bearerToken, 'secret_key', (err, decoded) => {
             if (err) {
                 res.status(403).json({ error: 'Token invalide ou expiré' });
             } else {
-                console.log(authData);  
-                req.user = authData; // S'assurer que authData contient les données attendues
+                console.log(decoded);  
+                req.userId = decoded.id; 
                 next();
             }
         });
@@ -24,6 +24,7 @@ function verifyToken(req, res, next) {
         res.status(403).json({ error: 'Token non fourni' });
     }
 }
+
 
 
 // Route pour l'inscription
@@ -69,17 +70,21 @@ router.post('/login', (req, res) => {
 // Route pour obtenir le profil de l'utilisateur
 router.get('/profile', verifyToken, (req, res) => {
     const userId = req.userId;
+    console.log('User ID:', userId); 
     db.query('SELECT username, email FROM users WHERE id = ?', [userId], (err, results) => {
         if (err) {
+            console.error('Database error:', err);
             return res.status(500).json({ error: err.message });
         }
+        console.log('Database results:', results);
         if (results.length > 0) {
-            res.json({ name: results[0].username, email: results[0].email });
+            res.json({ username: results[0].username, email: results[0].email });
         } else {
             res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
     });
 });
+
 
 // Mise à jour des informations de l'utilisateur
 router.put('/update-profile', verifyToken, async (req, res) => {
