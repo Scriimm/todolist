@@ -23,10 +23,6 @@ function verifyToken(req, res, next) {
     }
 }
 
-
-//faire techniqu du bled : deux vérify token différent
-
-
 // Route pour l'inscription
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
